@@ -36,7 +36,8 @@
 .inputGrup {
   display: flex;
   width: 100%;
-  justify-content: space-around;
+  justify-content: center;
+  gap: 10.5rem;
 }
 .input {
   border: 1px solid #ccc;
