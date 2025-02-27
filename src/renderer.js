@@ -26,9 +26,9 @@
  * ```
  */
 
-import "./index.css";
+// import "./index.css";
 // Add this to the end of the existing file
-import "./App.jsx";
+import "./main.jsx";
 
 console.log(
   '👋 This message is being logged by "renderer.js", included via Vite',
