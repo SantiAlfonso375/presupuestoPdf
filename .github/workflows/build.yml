@@ -28,5 +28,11 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Build and package
+      - name: Build application
+        run: npm run build # Asegúrate de que este comando genere el archivo main.js
+
+      - name: Package application
         run: npm run make
+
+      - name: List generated files
+        run: ls -R out/make || echo "No files found in out/make"
