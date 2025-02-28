@@ -18,10 +18,10 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4 # También puedes actualizar actions/checkout a la última versión
 
       - name: Set up Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v4 # Actualiza actions/setup-node a la última versión
         with:
           node-version: "16"
 
@@ -32,7 +32,7 @@ jobs:
         run: npm run make
 
       - name: Upload artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4 # Actualiza a la versión v4
         with:
           name: installer-${{ matrix.os }}
           path: out/make/*
