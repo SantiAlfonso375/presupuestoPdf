@@ -9,4 +9,4 @@ jobs:
 
     steps:
       -name: "Make"
-      run: npm run make
+      run: make
