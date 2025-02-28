@@ -29,7 +29,3 @@
 // import "./index.css";
 // Add this to the end of the existing file
 import "./main.jsx";
-
-console.log(
-  '👋 This message is being logged by "renderer.js", included via Vite',
-);

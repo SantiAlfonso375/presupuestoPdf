@@ -1,6 +1,7 @@
 {
-  "name": "my-app",
-  "productName": "my-app",
+  "name": "generador-presupuestos",
+  "productName": "Generador de Presupuestos",
+  "icon": "src/assets/iconGenerator.webp",
   "version": "1.0.0",
   "description": "My Electron application description",
   "main": ".vite/build/main.js",
@@ -47,13 +48,16 @@
         {
           "name": "@electron-forge/maker-squirrel",
           "config": {
-            "name": "my-app"
+            "name": "generador_presupuestos",
+            "iconUrl": "src/assets/iconGenerator.webp",
+            "setupIcon": "src/assets/iconGenerator.webp"
           }
         },
         {
           "name": "@electron-forge/maker-dmg",
           "config": {
-            "format": "ULFO"
+            "format": "ULFO",
+            "icon": "src/assets/iconGenerator.webp"
           }
         }
       ]
