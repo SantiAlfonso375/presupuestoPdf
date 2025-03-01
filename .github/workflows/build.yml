@@ -1,12 +1,37 @@
-name: Build and Package
+name: Build Windows Installer
 
 on:
   push:
-    branches: ["main"]
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: windows-latest # Ejecuta este job en una máquina virtual con Windows
 
     steps:
-      -name: "Make"
-      run: make
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "16"
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build application
+        run: npm run build # Construye la aplicación con Vite
+
+      - name: Package application
+        run: npm run make # Empaqueta la aplicación con Electron Forge
+
+      - name: Upload Windows installer
+        uses: actions/upload-artifact@v4
+        with:
+          name: windows-installer
+          path: out/make/*.exe # Sube el instalador de Windows
