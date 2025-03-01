@@ -1,40 +1,38 @@
-name: Build Windows Installer
+name: Build Electron Forge App for Windows
 
 on:
   push:
-    branches:
-      - main
-  pull_request:
-    branches:
-      - main
+    tags:
+      - "v*" # Se ejecuta cuando se hace un push de un tag como "v1.0.0"
 
 jobs:
   build:
-    runs-on: windows-latest # Ejecuta este job en una máquina virtual con Windows
-
+    runs-on: windows-latest # Necesitamos un entorno Windows para generar el instalador
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+      - name: Clonar el código fuente
+        uses: actions/checkout@v3
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
+      - name: Configurar Node.js
+        uses: actions/setup-node@v3
         with:
-          node-version: "16"
+          node-version: 18 # Usa Node 18 o superior
+          cache: "npm"
 
-      - name: Install dependencies
+      - name: Instalar dependencias
         run: npm install
 
-      - name: Build application
-        run: npm run build # Construye la aplicación con Vite
+      - name: Construir la aplicación con Electron Forge
+        run: npm run make
 
-      - name: List files after build
-        run: ls -R .vite/build || echo "No files found in .vite/build"
-
-      - name: Package application
-        run: npm run make # Empaqueta la aplicación con Electron Forge
-
-      - name: Upload Windows installer
-        uses: actions/upload-artifact@v4
+      - name: Subir el instalador como artefacto
+        uses: actions/upload-artifact@v3
         with:
-          name: windows-installer
-          path: out/make/*.exe # Sube el instalador de Windows
+          name: Windows-Installer
+          path: out/make/squirrel.windows/x64/*.exe
+
+      - name: Publicar en GitHub Releases (opcional)
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v1
+        with:
+          files: out/make/squirrel.windows/x64/*.exe
+          token: ${{ secrets.GITHUB_TOKEN }}
