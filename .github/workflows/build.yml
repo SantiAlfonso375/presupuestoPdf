@@ -1,4 +1,4 @@
-name: Build Windows Installer
+name: Build and Package
 
 on:
   push:
@@ -10,7 +10,11 @@ on:
 
 jobs:
   build:
-    runs-on: windows-latest # Ejecuta este job en una máquina virtual con Windows
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [macos-latest, windows-latest]
 
     steps:
       - name: Checkout repository
@@ -27,11 +31,22 @@ jobs:
       - name: Build application
         run: npm run build # Construye la aplicación con Vite
 
+      - name: List files after build
+        run: ls -R .vite/build || echo "No files found in .vite/build"
+
       - name: Package application
         run: npm run make # Empaqueta la aplicación con Electron Forge
 
       - name: Upload Windows installer
+        if: matrix.os == 'windows-latest'
         uses: actions/upload-artifact@v4
         with:
           name: windows-installer
           path: out/make/*.exe # Sube el instalador de Windows
+
+      - name: Upload macOS installer
+        if: matrix.os == 'macos-latest'
+        uses: actions/upload-artifact@v4
+        with:
+          name: macos-installer
+          path: out/make/*.dmg # Sube el instalador de macOS
