@@ -3,11 +3,11 @@ name: Build Electron Forge App for Windows
 on:
   push:
     tags:
-      - "v*" # Se ejecuta cuando se hace un push de un tag como "v1.0.0"
+      - "v*" # Se ejecuta cuando se sube un tag como "v1.0.0"
 
 jobs:
   build:
-    runs-on: windows-latest # Necesitamos un entorno Windows para generar el instalador
+    runs-on: windows-latest
     steps:
       - name: Clonar el código fuente
         uses: actions/checkout@v3
@@ -15,7 +15,7 @@ jobs:
       - name: Configurar Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: 18 # Usa Node 18 o superior
+          node-version: 18
           cache: "npm"
 
       - name: Instalar dependencias
@@ -25,7 +25,7 @@ jobs:
         run: npm run make
 
       - name: Subir el instalador como artefacto
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4 # ← Cambiado a v4
         with:
           name: Windows-Installer
           path: out/make/squirrel.windows/x64/*.exe
