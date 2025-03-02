@@ -12,6 +12,8 @@ const createWindow = () => {
   const mainWindow = new BrowserWindow({
     width: 1000,
     height: 700,
+    title: "Generador de presupuesto",
+    icon: path.join(__dirname, "../assets/iconGenerator.webp"),
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
     },
@@ -27,7 +29,7 @@ const createWindow = () => {
   }
 
   // Open the DevTools.
-  mainWindow.webContents.openDevTools();
+  // mainWindow.webContents.openDevTools();
 };
 
 // This method will be called when Electron has finished
