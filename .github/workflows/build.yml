@@ -39,7 +39,7 @@ jobs:
           npm run make
 
       - name: Upload Windows Installer
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4 # Actualización a v4
         with:
           name: windows-installer
           path: ./out/make/**/setup*.exe # Ajusta el path según tu estructura de salida
