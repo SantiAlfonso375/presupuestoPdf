@@ -1,46 +1,46 @@
-name: Windows Installer Build
+name: Build Windows Installer
 
 on:
   push:
     branches:
-      - main # Cambia "main" si tu rama principal tiene otro nombre
+      - main
 
 jobs:
   build:
-    runs-on: windows-latest # Usamos Windows como entorno de ejecución
+    runs-on: windows-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout code
         uses: actions/checkout@v2
 
       - name: Set up Node.js
         uses: actions/setup-node@v2
         with:
-          node-version: "16" # Cambia a la versión de Node.js que usas en tu proyecto
+          node-version: "16"
 
-      - name: Install dependencies
-        run: |
-          npm install
-
-      - name: Cache Node.js modules
-        uses: actions/cache@v2
+      - name: Cache dependencies
+        uses: actions/cache@v3
         with:
           path: ~/.npm
           key: ${{ runner.os }}-node-modules-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
             ${{ runner.os }}-node-modules-
 
-      - name: Install Visual Studio Build Tools
-        run: |
-          choco install visualstudio2019-workload-vctools
+      - name: Install dependencies
+        run: npm install
 
-      - name: Build Windows Installer
+      - name: Set up Visual Studio Build Tools
+        uses: microsoft/setup-msbuild@v1
+        with:
+          vs-version: "latest"
+
+      - name: Build Windows Installer using Electron Forge
         run: |
           npm run make
 
-      - name: Upload Windows Installer Artifacts
-        uses: actions/upload-artifact@v2
+      - name: Upload Windows Installer
+        uses: actions/upload-artifact@v3
         with:
           name: windows-installer
-          path: ./out/make/squirrel.windows/x64/*.exe # Cambia la ruta si es necesario
+          path: ./out/make/**/setup*.exe # Ajusta el path según tu estructura de salida
 
