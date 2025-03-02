@@ -1,0 +1,46 @@
+name: Windows Installer Build
+
+on:
+  push:
+    branches:
+      - main # Cambia "main" si tu rama principal tiene otro nombre
+
+jobs:
+  build:
+    runs-on: windows-latest # Usamos Windows como entorno de ejecución
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: "16" # Cambia a la versión de Node.js que usas en tu proyecto
+
+      - name: Install dependencies
+        run: |
+          npm install
+
+      - name: Cache Node.js modules
+        uses: actions/cache@v2
+        with:
+          path: ~/.npm
+          key: ${{ runner.os }}-node-modules-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-modules-
+
+      - name: Install Visual Studio Build Tools
+        run: |
+          choco install visualstudio2019-workload-vctools
+
+      - name: Build Windows Installer
+        run: |
+          npm run make
+
+      - name: Upload Windows Installer Artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: windows-installer
+          path: ./out/make/squirrel.windows/x64/*.exe # Cambia la ruta si es necesario
+

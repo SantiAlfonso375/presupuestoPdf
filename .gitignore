@@ -1,3 +1,4 @@
+
 # Logs
 logs
 *.log
@@ -89,4 +90,6 @@ typings/
 .vite/
 
 # Electron-Forge
-out/
+out/*
+!out/make/squirrel.windows/x64/*.exe
+
