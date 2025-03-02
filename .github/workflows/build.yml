@@ -1,4 +1,3 @@
-
 name: Windows Installer Build
 
 on:
@@ -44,5 +43,4 @@ jobs:
         with:
           name: windows-installer
           path: ./out/make/squirrel.windows/x64/*.exe # Cambia la ruta si es necesario
-
 
