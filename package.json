@@ -48,16 +48,13 @@
         {
           "name": "@electron-forge/maker-squirrel",
           "config": {
-            "name": "generador_presupuestos",
-            "iconUrl": "src/assets/iconGenerator.webp",
-            "setupIcon": "src/assets/iconGenerator.webp"
+            "name": "generador_presupuestos"
           }
         },
         {
           "name": "@electron-forge/maker-dmg",
           "config": {
-            "format": "ULFO",
-            "icon": "src/assets/iconGenerator.webp"
+            "format": "ULFO"
           }
         }
       ]

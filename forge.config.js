@@ -9,7 +9,9 @@ module.exports = {
   makers: [
     {
       name: '@electron-forge/maker-squirrel',
-      config: {},
+      config: {
+        setupIcon: null, // Esto evita que use un icono
+      },
     },
     {
       name: '@electron-forge/maker-zip',
