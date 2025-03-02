@@ -1,41 +1,48 @@
-name: Build Electron Forge App for Windows
+
+name: Windows Installer Build
 
 on:
   push:
-    tags:
-      - "v*" # Ejecutar solo cuando se crea un tag como v1.0.0
+    branches:
+      - main # Cambia "main" si tu rama principal tiene otro nombre
 
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: windows-latest # Usamos Windows como entorno de ejecución
 
     steps:
-      - name: Clonar el código
-        uses: actions/checkout@v3
+      - name: Checkout repository
+        uses: actions/checkout@v2
 
-      - name: Configurar Node.js
-        uses: actions/setup-node@v3
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
         with:
-          node-version: 18
-          cache: "npm"
+          node-version: "16" # Cambia a la versión de Node.js que usas en tu proyecto
 
-      - name: Instalar dependencias
-        run: npm install
+      - name: Install dependencies
+        run: |
+          npm install
 
-      - name: Construir aplicación con Electron Forge
-        run: npm run make
-
-      - name: Subir instalador como artefacto
-        uses: actions/upload-artifact@v4
+      - name: Cache Node.js modules
+        uses: actions/cache@v2
         with:
-          name: Windows-Installer
-          path: out/make/squirrel.windows/x64/*.exe # <- Aquí se guardan los instaladores por defecto
-          retention-days: 7
+          path: ~/.npm
+          key: ${{ runner.os }}-node-modules-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-modules-
 
-      - name: Publicar en Releases
-        if: startsWith(github.ref, 'refs/tags/')
-        uses: softprops/action-gh-release@v1
+      - name: Install Visual Studio Build Tools
+        run: |
+          choco install visualstudio2019-workload-vctools
+
+      - name: Build Windows Installer
+        run: |
+          npm run make
+
+      - name: Upload Windows Installer Artifacts
+        uses: actions/upload-artifact@v2
         with:
-          files: out/make/squirrel.windows/x64/*.exe
-        env:
-          GITHUB_TOKEN: ${{ secrets.GH_TOKEN }}
+          name: windows-installer
+          path: ./out/make/squirrel.windows/x64/*.exe # Cambia la ruta si es necesario
+
+
