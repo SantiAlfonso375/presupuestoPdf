@@ -49,6 +49,16 @@ module.exports = {
           {
             name: 'main_window',
             config: 'vite.renderer.config.mjs',
+            entryPoints: [
+              {
+                html: 'index.html',
+                js: 'src/main.jsx',
+                name: 'main_window',
+                preload: {
+                  js: 'src/preload.js',
+                },
+              },
+            ],
           },
         ],
       },

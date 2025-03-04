@@ -7,6 +7,14 @@ if (started) {
   app.quit();
 }
 
+// The following command line switches disable GPU acceleration and related features
+// to prevent GPU-related error messages like "EGL Driver message (Error) eglQueryDeviceAttribEXT: Bad attribute"
+// This may improve stability on systems with problematic graphics drivers
+app.commandLine.appendSwitch('disable-gpu');
+app.commandLine.appendSwitch('disable-gpu-compositing');
+app.commandLine.appendSwitch('disable-gpu-rasterization');
+app.commandLine.appendSwitch('disable-software-rasterizer');
+
 const createWindow = () => {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
@@ -26,9 +34,8 @@ const createWindow = () => {
     console.log("Cargando desde Vite Dev Server:", htmlPath);
     mainWindow.loadURL(htmlPath);
   } else {
-    //htmlPath = path.join(__dirname, `../${process.env.MAIN_WINDOW_VITE_NAME}/index.html`);
-    htmlPath = path.join(__dirname, "../index.html");
-    // htmlPath = path.join(__dirname, "../dist/index.html");
+    // In production, files are processed by Vite and placed in the dist directory
+    htmlPath = path.join(__dirname, "../dist/index.html");
 
     console.log("Cargando archivo HTML:", htmlPath);
     mainWindow.loadFile(htmlPath).catch((err) => {
